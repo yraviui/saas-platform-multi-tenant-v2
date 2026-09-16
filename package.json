@@ -1,0 +1,11 @@
+{
+  "name": "saas-platform-multi-tenant-v2",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --prefix-colors \"blue,green,cyan,magenta,yellow,red,white,gray,blue,green,cyan,magenta\" --prefix \"[{name}]\" -n \"GATEWAY,AUTH,TENANT,USER,FUND,EXPENDITURE,PAYMENT,PAYMENT_METHOD,SUBSCRIPTION,REPORT,AUDIT,ADMIN\" \"npm run dev --prefix api-gateway\" \"npm run dev --prefix services/ms-01-auth-service\" \"npm run dev --prefix services/ms-02-tenant-service\" \"npm run dev --prefix services/ms-03-user-service\" \"npm run dev --prefix services/ms-04-fund-service\" \"npm run dev --prefix services/ms-05-expenditure-service\" \"npm run dev --prefix services/ms-06-payment-service\" \"npm run dev --prefix services/ms-07-payment-method-service\" \"npm run dev --prefix services/ms-08-subscription-service\" \"npm run dev --prefix services/ms-09-report-service\" \"npm run dev --prefix services/ms-10-audit-service\" \"npm run dev --prefix services/ms-11-admin-service\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
