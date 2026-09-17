@@ -32,15 +32,13 @@ const services = {
   paymentMethod: {
     name: "ms-07-payment-method-service",
     url:
-      process.env.PAYMENT_METHOD_SERVICE_URL ||
-      "http://localhost:5007",
+      process.env.PAYMENT_METHOD_SERVICE_URL || "http://localhost:5007",
   },
 
   subscription: {
     name: "ms-08-subscription-service",
     url:
-      process.env.SUBSCRIPTION_SERVICE_URL ||
-      "http://localhost:5008",
+      process.env.SUBSCRIPTION_SERVICE_URL || "http://localhost:5008",
   },
 
   report: {

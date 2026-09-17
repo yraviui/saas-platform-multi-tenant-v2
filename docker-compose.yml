@@ -1,0 +1,192 @@
+services:
+
+  # =========================================================
+  # API GATEWAY
+  # =========================================================
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: saas-api-gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./api-gateway/.env.docker
+    depends_on:
+      - auth
+      - tenant
+      - user
+      - fund
+      - expenditure
+      - payment
+      - payment-method
+      - subscription
+      - report
+      - audit
+      - admin
+    restart: unless-stopped
+
+
+  # =========================================================
+  # AUTH SERVICE
+  # =========================================================
+
+  auth:
+    build:
+      context: ./services/ms-01-auth-service
+    container_name: saas-auth
+    env_file:
+      - ./services/ms-01-auth-service/.env
+    expose:
+      - "5001"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # TENANT SERVICE
+  # =========================================================
+
+  tenant:
+    build:
+      context: ./services/ms-02-tenant-service
+    container_name: saas-tenant
+    env_file:
+      - ./services/ms-02-tenant-service/.env
+    expose:
+      - "5002"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # USER SERVICE
+  # =========================================================
+
+  user:
+    build:
+      context: ./services/ms-03-user-service
+    container_name: saas-user
+    env_file:
+      - ./services/ms-03-user-service/.env
+    expose:
+      - "5003"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # FUND SERVICE
+  # =========================================================
+
+  fund:
+    build:
+      context: ./services/ms-04-fund-service
+    container_name: saas-fund
+    env_file:
+      - ./services/ms-04-fund-service/.env
+    expose:
+      - "5004"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # EXPENDITURE SERVICE
+  # =========================================================
+
+  expenditure:
+    build:
+      context: ./services/ms-05-expenditure-service
+    container_name: saas-expenditure
+    env_file:
+      - ./services/ms-05-expenditure-service/.env
+    expose:
+      - "5005"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # PAYMENT SERVICE
+  # =========================================================
+
+  payment:
+    build:
+      context: ./services/ms-06-payment-service
+    container_name: saas-payment
+    env_file:
+      - ./services/ms-06-payment-service/.env
+    expose:
+      - "5006"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # PAYMENT METHOD SERVICE
+  # =========================================================
+
+  payment-method:
+    build:
+      context: ./services/ms-07-payment-method-service
+    container_name: saas-payment-method
+    env_file:
+      - ./services/ms-07-payment-method-service/.env
+    expose:
+      - "5007"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # SUBSCRIPTION SERVICE
+  # =========================================================
+
+  subscription:
+    build:
+      context: ./services/ms-08-subscription-service
+    container_name: saas-subscription
+    env_file:
+      - ./services/ms-08-subscription-service/.env
+    expose:
+      - "5008"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # REPORT SERVICE
+  # =========================================================
+
+  report:
+    build:
+      context: ./services/ms-09-report-service
+    container_name: saas-report
+    env_file:
+      - ./services/ms-09-report-service/.env
+    expose:
+      - "5009"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # AUDIT SERVICE
+  # =========================================================
+
+  audit:
+    build:
+      context: ./services/ms-10-audit-service
+    container_name: saas-audit
+    env_file:
+      - ./services/ms-10-audit-service/.env
+    expose:
+      - "5010"
+    restart: unless-stopped
+
+
+  # =========================================================
+  # ADMIN SERVICE
+  # =========================================================
+
+  admin:
+    build:
+      context: ./services/ms-11-admin-service
+    container_name: saas-admin
+    env_file:
+      - ./services/ms-11-admin-service/.env
+    expose:
+      - "5011"
+    restart: unless-stopped

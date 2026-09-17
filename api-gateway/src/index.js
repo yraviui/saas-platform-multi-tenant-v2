@@ -16,73 +16,183 @@ import { createServiceProxy } from "./proxy/serviceProxy.js";
 
 const app = express();
 
-// Security
+/**
+ * ============================================================
+ * SECURITY
+ * ============================================================
+ */
+
 app.use(helmet());
 
-// Request processing
-app.use(corsMiddleware);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+/**
+ * ============================================================
+ * REQUEST PROCESSING
+ * ============================================================
+ */
 
-// Logging / tracing
+app.use(corsMiddleware);
+
+app.use(express.json());
+
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+);
+
+/**
+ * ============================================================
+ * LOGGING / REQUEST TRACING
+ * ============================================================
+ */
+
 app.use(requestId);
+
 app.use(logger);
 
-// Rate limiting
+/**
+ * ============================================================
+ * RATE LIMITING
+ * ============================================================
+ */
+
 app.use(rateLimiter);
 
-// Gateway routes
+/**
+ * ============================================================
+ * GATEWAY ROUTES
+ * ============================================================
+ */
+
+// Gateway health
 app.use("/health", healthRoutes);
+
+// Gateway information
 app.use("/info", infoRoutes);
 
-// Auth Service
-app.use( "/api/auth", createServiceProxy( services.auth.url, "/api/auth" ) );
+/**
+ * ============================================================
+ * MICROSERVICE PROXY ROUTES
+ * ============================================================
+ */
 
-// Tenant Service
-app.use( "/api/tenant", createServiceProxy( services.tenant.url, "/api/tenant" ) );
+// MS-01 Auth Service
+app.use(
+  createServiceProxy(
+    services.auth.url,
+    "/api/auth"
+  )
+);
 
-// user Service
-app.use( "/api/user", createServiceProxy( services.user.url, "/api/user" ) );
+// MS-02 Tenant Service
+app.use(
+  createServiceProxy(
+    services.tenant.url,
+    "/api/tenant"
+  )
+);
 
-// fund Service
-app.use( "/api/fund", createServiceProxy( services.fund.url, "/api/fund" ) );
+// MS-03 User Service
+app.use(
+  createServiceProxy(
+    services.user.url,
+    "/api/user"
+  )
+);
 
-// expenditure Service
-app.use( "/api/expenditure", createServiceProxy( services.expenditure.url, "/api/expenditure" ) );
+// MS-04 Fund Service
+app.use(
+  createServiceProxy(
+    services.fund.url,
+    "/api/fund"
+  )
+);
 
-// payment Service
-app.use( "/api/payment", createServiceProxy( services.payment.url, "/api/payment" ) );
+// MS-05 Expenditure Service
+app.use(
+  createServiceProxy(
+    services.expenditure.url,
+    "/api/expenditure"
+  )
+);
 
-// paymentMethod Service
-app.use( "/api/payment-method", createServiceProxy( services.paymentMethod.url, "/api/payment-method" ) );
+// MS-06 Payment Service
+app.use(
+  createServiceProxy(
+    services.payment.url,
+    "/api/payment"
+  )
+);
 
-// subscription Service
-app.use( "/api/subscription", createServiceProxy( services.subscription.url, "/api/subscription" ) );
+// MS-07 Payment Method Service
+app.use(
+  createServiceProxy(
+    services.paymentMethod.url,
+    "/api/payment-method"
+  )
+);
 
-// report Service
-app.use( "/api/report", createServiceProxy( services.report.url, "/api/report" ) );
+// MS-08 Subscription Service
+app.use(
+  createServiceProxy(
+    services.subscription.url,
+    "/api/subscription"
+  )
+);
 
-// audit Service
-app.use( "/api/audit", createServiceProxy( services.audit.url, "/api/audit" ) );
+// MS-09 Report Service
+app.use(
+  createServiceProxy(
+    services.report.url,
+    "/api/report"
+  )
+);
 
-// admin Service
-app.use( "/api/admin", createServiceProxy( services.admin.url, "/api/admin" ) );
+// MS-10 Audit Service
+app.use(
+  createServiceProxy(
+    services.audit.url,
+    "/api/audit"
+  )
+);
 
-// 404
+// MS-11 Admin Service
+app.use(
+  createServiceProxy(
+    services.admin.url,
+    "/api/admin"
+  )
+);
+
+/**
+ * ============================================================
+ * 404
+ * ============================================================
+ */
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "Route not found",
     path: req.originalUrl,
-    requestId: req.requestId,
+    requestId: req.requestId
   });
 });
 
-// Error handler
+/**
+ * ============================================================
+ * GLOBAL ERROR HANDLER
+ * ============================================================
+ */
+
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-  console.log(
-    `[${config.serviceName}] running on http://localhost:${config.port}`
-  );
+/**
+ * ============================================================
+ * START SERVER
+ * ============================================================
+ */
+
+app.listen(config.port, "0.0.0.0", () => {
+    console.log(`[${config.serviceName}] running on http://localhost:${config.port}`);
 });
